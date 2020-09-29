@@ -66,7 +66,7 @@
 
     h1{
         text-align: center;
-        margin-top: 10vh;
+        margin-top: 5vh;
     }
     
     .input-info-page, .row-info-page, .form-group-info-page, .a-info-page, .container-info-page{
@@ -81,6 +81,10 @@
         height: auto;
     }
 
+    .info-img{
+        margin-top: 15px;
+        margin-bottom: 15px !important;
+    }
 
 }
 

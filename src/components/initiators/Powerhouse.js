@@ -6,10 +6,10 @@ export default function Powerhouse() {
         <div className="content-wrapper">
             <div className="container h-100 container-info-page">
                 <div className="row row-info-page h-100">
-                    <div className="col-lg-6 col-md-6 col-sm-12 col-12 pr-md-3">
+                    <div className="col-lg-6 col-md-6 col-sm-12 col-12 pr-md-5">
                         <div className="row row-info-page h-75 my-5">
-                            <h1>Video Call Interview</h1>
-                            <p className="">This platform boasts flawless video, crystal clear audio and instant sharing capabilities that make it our favorite option for video call interviews.</p>
+                            <h1>Powerhouse Interview</h1>
+                            <p className="">Perfect platform to take any kind of interviews. It includes every tool needed for online interviews, having features such as codepad, notepad video and audio call.</p>
                             <div className="row row-info-page">
                                 <div className="collapse col-lg-12" id="generated-link">
                                         <div className="form-group from-group-info-page mt-3  text-center">
@@ -32,7 +32,7 @@ export default function Powerhouse() {
                     </div>
                     <div className="col-lg-6 col-md-6 col-sm-12 col-12">
                         <div className="row row-info-page h-100">
-                            <img className="info-img" src="images/videoCalling.jpg" alt="videocalling" />
+                            <img className="info-img" src="images/powerhouse.jpg" alt="videocalling" />
                         </div>
                     </div>
                 </div>

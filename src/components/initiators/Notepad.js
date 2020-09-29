@@ -7,10 +7,10 @@ export default function Notepad() {
         <div className="content-wrapper">
             <div className="container h-100 container-info-page">
                 <div className="row row-info-page h-100">
-                    <div className="col-lg-6 col-md-6 col-sm-12 col-12 pr-md-3">
+                    <div className="col-lg-6 col-md-6 col-sm-12 col-12 pr-md-5">
                         <div className="row row-info-page h-75 my-5">
-                            <h1>Video Call Interview</h1>
-                            <p className="">This platform boasts flawless video, crystal clear audio and instant sharing capabilities that make it our favorite option for video call interviews.</p>
+                            <h1>Live Notepad</h1>
+                            <p className="">Live notepad is your online notepad on the web. It allows you to store notes on the GO without having to Login. Best of all - anotepad is a fast, clean, simple to use and FREE online web notepad.</p>
                             <div className="row row-info-page">
                                 <div className="collapse col-lg-12" id="generated-link">
                                         <div className="form-group from-group-info-page mt-3  text-center">
@@ -33,7 +33,7 @@ export default function Notepad() {
                     </div>
                     <div className="col-lg-6 col-md-6 col-sm-12 col-12">
                         <div className="row row-info-page h-100">
-                            <img className="info-img" src="images/videoCalling.jpg" alt="videocalling" />
+                            <img className="info-img" src="images/notepad.jpg" alt="videocalling" />
                         </div>
                     </div>
                 </div>

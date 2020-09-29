@@ -6,9 +6,9 @@ export default function Videocall() {
         <div className="content-wrapper">
             <div className="container h-100 container-info-page">
                 <div className="row row-info-page h-100">
-                    <div className="col-lg-6 col-md-6 col-sm-12 col-12 pr-md-3">
+                    <div className="col-lg-6 col-md-6 col-sm-12 col-12 pr-md-5">
                         <div className="row row-info-page h-75 my-5">
-                            <h1>Video Call Interview</h1>
+                            <h1>Video Call</h1>
                             <p className="">This platform boasts flawless video, crystal clear audio and instant sharing capabilities that make it our favorite option for video call interviews.</p>
                             <div className="row row-info-page">
                                 <div className="collapse col-lg-12" id="generated-link">
