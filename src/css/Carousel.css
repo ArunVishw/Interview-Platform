@@ -1,0 +1,35 @@
+:root{
+    --nav-height: 56px;
+}
+
+.carousel{
+    height: calc(100vh - var(--nav-height)) !important;
+}
+  
+.carousel-image-lg{
+    content:"";
+    display:block;
+    position:absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    background:linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.9));
+}
+  
+.carousel-item img{
+    width: 100%;
+    height: calc(100vh - var(--nav-height)) !important;
+    object-fit: fill;
+    z-index: -1;
+}
+
+@media screen and (max-width: 576px) {
+    .carousel{
+        height: calc(70vh - var(--nav-height)) !important;
+    }
+
+    .carousel-item img{
+        height: calc(70vh - var(--nav-height)) !important;
+    }
+} 

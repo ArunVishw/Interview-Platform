@@ -1,0 +1,86 @@
+:root{
+    --height-fixed: 112px;
+}
+
+.content-wrapper{
+    height: calc(100vh - var(--height-fixed));
+}
+
+.info-img{
+    margin: auto;
+    width: 95%;
+    height: 80%;
+    object-fit: fill;
+    border: 20px solid white;
+    box-shadow: 5px 5px 15px 15px grey;
+}
+
+.container-info-page{
+    max-width: 90vw;
+}
+
+@media screen and (max-width: 992px) {
+    .container-info-page{
+        max-width: 90vw;
+        margin-left: 5vw;
+        margin-right: 2vw;
+    }
+
+    .input-info-page, .form-group-info-page, .a-info-page{
+        width: 100% !important;
+    }
+
+    .input-info-page{
+        margin-top: 5vh;
+    }
+}
+
+
+@media screen and (max-width: 896px) {
+    .input-info-page, .form-group-info-page, .a-info-page{
+        width: 100% !important;
+    }
+
+    .container-info-page{
+        margin-left: 2vw;
+        margin-right: 0vw;
+    }
+
+    .input-info-page{
+        margin-top: 5vh;
+    }
+}
+
+@media screen and (max-width: 768px) {
+
+    .row-info-page{
+        margin: 0px;
+        padding: 0px;
+    }
+
+    .container-info-page{
+        max-width: 90vw;
+        margin-left: 5vw;
+        margin-right: 5vw;
+    }
+
+    h1{
+        text-align: center;
+        margin-top: 10vh;
+    }
+    
+    .input-info-page, .row-info-page, .form-group-info-page, .a-info-page, .container-info-page{
+        width: 100% !important;
+    }
+
+    .input-info-page{
+        margin-top: 5vh;
+    }
+
+    .content-wrapper{
+        height: auto;
+    }
+
+
+}
+
