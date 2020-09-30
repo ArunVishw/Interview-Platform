@@ -33,12 +33,12 @@ export default class Tool_Notepad extends Component {
             if( document.getElementById('record').innerHTML == "Start Recording" ){
                 recognition.start(); 
                 document.getElementById('record').innerHTML = "Stop Recording";
-                document.getElementById('instructions').innerHTML = "Speak to type !";
+                document.getElementById('instructions-notepad').innerHTML = "Speak to type !";
             }
             else{
                 recognition.stop(); 
                 document.getElementById('record').innerHTML = "Start Recording";
-                document.getElementById('instructions').innerHTML = "";
+                document.getElementById('instructions-notepad').innerHTML = "";
             }
         };
 
@@ -53,7 +53,7 @@ export default class Tool_Notepad extends Component {
                 <div className="container mb-sm-5">
                     <nav className="navbar navbar-expand-sm navbar-light bg-light"   style={style1}>
                         <Link to="/notepad" className="navbar-brand">NOTEPAD</Link>
-                        <span id="instructions"></span>
+                        <span id="instructions-notepad"></span>
                         <button className="navbar-toggler ml-auto" data-toggle="collapse" data-target="#options-notepad">
                             <span className="navbar-toggler-icon text-dark"></span>
                         </button>
