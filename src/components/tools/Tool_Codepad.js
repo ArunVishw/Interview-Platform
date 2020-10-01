@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import brace from 'brace';
+// import brace from 'brace';
 import AceEditor from 'react-ace';
 
 // Import a Mode (language)
@@ -45,20 +45,47 @@ const styleContainer = {
     paddingBottom: "5vh"
 }
 
+var code = "";
+
+function findAppropriateEditor(lang){
+    if( lang === 'C') return 'java';
+    else if( lang === 'Cpp') return 'java';
+    else if( lang === 'Cpp14') return 'java';
+    else if( lang === 'Csharp') return 'csharp';
+    else if( lang === 'Java') return 'java';
+    else if( lang === 'Perl') return 'python';
+    else if( lang === 'PHP') return 'html';
+    else if( lang === 'Python') return 'python';
+    else if( lang === 'Python3') return 'python';
+    else if( lang === 'Scala') return 'python';
+    else if( lang === 'HTML and JS') return 'html';
+    else if( lang === 'XML') return 'xml';
+    else if( lang === 'Ruby') return 'ruby';
+    else if( lang === 'Sass') return 'sass';
+    else if( lang === 'Markdown') return 'markdown';
+    else if( lang === 'Mysql') return 'mysql';
+    else if( lang === 'Json') return 'json';
+    else if( lang === 'Handlebars') return 'handlebars';
+    else if( lang === 'Golang') return 'golang';
+    else if( lang === 'Coffee') return 'coffee';
+    else if( lang === 'Css') return 'css';
+}
+
+
 export default class Tool_Codepad extends Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
-            language: "java",
-            theme: "monokai",
-            output: "run"
+            language: "Python3",
+            theme: "github"
         };
         
         this.onChange = this.onChange.bind(this);
     }
 
     onChange(newValue) {
-        console.log('change', newValue);
+        console.log(newValue);
+        code=newValue;
     }
 
     changeLanguage = (event) => {
@@ -75,8 +102,7 @@ export default class Tool_Codepad extends Component {
 
     updateOutput = (event) => {
         document.getElementById('generated-output').style.display = "block";
-        var code = document.getElementById('code-text').innerHTML;
-        var input = "";
+        var input =  document.getElementById('input-text').value;
         var data={
             'lang': this.state.language,
             'code': code,
@@ -84,28 +110,22 @@ export default class Tool_Codepad extends Component {
             'save': false
         }
 
-        fetch("https://ide.geeksforgeeks.org/main.php",{
+        fetch("http://localhost:5000/tools/getCodeOutput",{
             method: 'POST',
-            data: data,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
         })
         .then(res => res.json())
         .then(
             (result) => {
-                console.log(result);
-                // this.setState({
-                //     output: result
-                // });
+                document.getElementById('output-text').innerText = result;
             },
             (error) => {
                 console.log(error);
-                // this.setState({
-                //     output: error
-                // });
             }
         )
-        // this.setState({
-        //     output: "Output Produced"
-        // });
     }
 
     render() {
@@ -124,25 +144,34 @@ export default class Tool_Codepad extends Component {
                         <div className="collapse navbar-collapse" id="options-notepad">
                             <ul className="navbar-nav text-center ml-auto">
                                 {/* <li className="nav-item nav-link" data-toggle="collapse" href="#generated-output" role="button" aria-expanded="false" aria-controls="collapse" onClick={this.updateOutput}>Run</li> */}
-                                <li className="nav-item nav-link"  onClick={this.updateOutput}>Run</li>
+                                <li className="nav-item nav-link"  onClick={this.updateOutput}>
+                                    <div className="spinner-border text-danger"></div>
+                                    <span>Run</span>
+                                </li>
                                 <li className="nav-item dropdown">
                                     <a href="#" className="nav-link dropdown-toggle" data-toggle="dropdown">Languages</a>
                                     <div className="dropdown-menu" style={{maxHeight: "30vh", overflowY: "auto"}}>
-                                        <p className="dropdown-item" onClick={this.changeLanguage} >java</p>
-                                        <p className="dropdown-item" onClick={this.changeLanguage} >python</p>
-                                        <p className="dropdown-item" onClick={this.changeLanguage} >javascript</p>
-                                        <p className="dropdown-item" onClick={this.changeLanguage} >xml</p>
-                                        <p className="dropdown-item" onClick={this.changeLanguage} >ruby</p>
-                                        <p className="dropdown-item" onClick={this.changeLanguage} >sass</p>
-                                        <p className="dropdown-item" onClick={this.changeLanguage} >markdown</p>
-                                        <p className="dropdown-item" onClick={this.changeLanguage} >mysql</p>
-                                        <p className="dropdown-item" onClick={this.changeLanguage} >json</p>
-                                        <p className="dropdown-item" onClick={this.changeLanguage} >html</p>
-                                        <p className="dropdown-item" onClick={this.changeLanguage} >handlebars</p>
-                                        <p className="dropdown-item" onClick={this.changeLanguage} >golang</p>
-                                        <p className="dropdown-item" onClick={this.changeLanguage} >csharp</p>
-                                        <p className="dropdown-item" onClick={this.changeLanguage} >coffee</p>
-                                        <p className="dropdown-item" onClick={this.changeLanguage} >css</p>
+                                        <p className="dropdown-item" onClick={this.changeLanguage} >C</p>
+                                        <p className="dropdown-item" onClick={this.changeLanguage} >Cpp</p>
+                                        <p className="dropdown-item" onClick={this.changeLanguage} >Cpp14</p>
+                                        <p className="dropdown-item" onClick={this.changeLanguage} >Csharp</p>
+                                        <p className="dropdown-item" onClick={this.changeLanguage} >Java</p>
+                                        <p className="dropdown-item" onClick={this.changeLanguage} >Perl</p>
+                                        <p className="dropdown-item" onClick={this.changeLanguage} >PHP</p>
+                                        <p className="dropdown-item" onClick={this.changeLanguage} >Python</p>
+                                        <p className="dropdown-item" onClick={this.changeLanguage} >Python3</p>
+                                        <p className="dropdown-item" onClick={this.changeLanguage} >Scala</p>
+                                        <p className="dropdown-item" onClick={this.changeLanguage} >HTML and JS</p>
+                                        <p className="dropdown-item" onClick={this.changeLanguage} >XML</p>
+                                        <p className="dropdown-item" onClick={this.changeLanguage} >Ruby</p>
+                                        <p className="dropdown-item" onClick={this.changeLanguage} >Sass</p>
+                                        <p className="dropdown-item" onClick={this.changeLanguage} >Markdown</p>
+                                        <p className="dropdown-item" onClick={this.changeLanguage} >Mysql</p>
+                                        <p className="dropdown-item" onClick={this.changeLanguage} >Json</p>
+                                        <p className="dropdown-item" onClick={this.changeLanguage} >Handlebars</p>
+                                        <p className="dropdown-item" onClick={this.changeLanguage} >Golang</p>
+                                        <p className="dropdown-item" onClick={this.changeLanguage} >Coffee</p>
+                                        <p className="dropdown-item" onClick={this.changeLanguage} >Css</p>
                                     </div>
                                 </li>
                                 <li className="nav-item dropdown">
@@ -162,16 +191,25 @@ export default class Tool_Codepad extends Component {
                         </div>
                     </nav>
                     <AceEditor
-                        mode={this.state.language}
+                        mode={findAppropriateEditor(this.state.language)}
                         theme={this.state.theme}
                         onChange={this.onChange}
                         name="code-text"
-                        editorProps={{
-                            $blockScrolling: true
+                        editorProps={{ $blockScrolling: true }}
+                        setOptions={{
+                            'enableBasicAutocompletion': true,
+                            'enableLiveAutocompletion': true,
+                            'enableSnippets': true
                         }}
                         style={{width: "100%", fontSize: "1rem", borderBottom: "1px solid black", borderLeft: "1px solid grey", borderRight: "1px solid grey"}}
                     />
 
+                    <div className="col-lg-12 mt-5">
+                        <div className="form-group from-group-info-page mt-3">
+                            <p className="text-center">Enter Input : </p>
+                            <textarea className="form-control" id="input-text" ></textarea>
+                        </div>
+                    </div>
                     
                     <div className="col-lg-12 mt-5" id="generated-output" style={{display: "none"}}>
                         <div className="form-group from-group-info-page mt-3">

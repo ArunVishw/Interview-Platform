@@ -30,7 +30,7 @@ export default class Tool_Notepad extends Component {
         };
 
         document.getElementById('record').onclick = function(){
-            if( document.getElementById('record').innerHTML == "Start Recording" ){
+            if( document.getElementById('record').innerHTML === "Start Recording" ){
                 recognition.start(); 
                 document.getElementById('record').innerHTML = "Stop Recording";
                 document.getElementById('instructions-notepad').innerHTML = "Speak to type !";

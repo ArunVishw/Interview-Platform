@@ -19,6 +19,10 @@
     max-width: 90vw;
 }
 
+#loading, #generated-link{
+    display: none;
+}
+
 @media screen and (max-width: 992px) {
     .container-info-page{
         max-width: 90vw;
