@@ -1,19 +1,15 @@
 import requests
+import sys
+
+data = {
+    'lang': sys.argv[1],
+    'code': sys.argv[2],
+    'input': sys.argv[3],
+    'save': sys.argv[4]
+}
 
 url1 = "https://ide.geeksforgeeks.org/main.php"
-code = """
-#include<stdio.h>
-int main() {
-    printf("hello");
-    return 0;
-}
-"""
-data = {
-    'lang': 'c',
-    'code': code,
-    'input': '',
-    'save': True
-}
+
 r = requests.post(url1, data=data).json()
 sid=r['sid']
 
@@ -26,4 +22,4 @@ while Output['status'] != 'SUCCESS' :
     response = requests.post(url2, data={'sid': sid, 'requestType': 'fetchResults'})
     Output = response.json()
 
-print(Output)
+print(Output['output'])

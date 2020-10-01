@@ -84,7 +84,7 @@ export default class Tool_Codepad extends Component {
     }
 
     onChange(newValue) {
-        console.log(newValue);
+        // console.log(newValue);
         code=newValue;
     }
 
@@ -108,7 +108,7 @@ export default class Tool_Codepad extends Component {
             'code': code,
             'input': input,
             'save': false
-        }
+        };
 
         fetch("http://localhost:5000/tools/getCodeOutput",{
             method: 'POST',
@@ -123,7 +123,7 @@ export default class Tool_Codepad extends Component {
                 document.getElementById('output-text').innerText = result;
             },
             (error) => {
-                console.log(error);
+                console.log(JSON.stringify(error));
             }
         )
     }

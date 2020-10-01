@@ -17,7 +17,6 @@ app.use(function (req, res, next) {
 });
 
 
-
 app.get('/', (req, res) => {
     res.end('Hello');
 });
