@@ -11,13 +11,13 @@ ToolsRouter.post('/getCodeOutput', (req,res) => {
 
     // collect data from script
     python.stdout.on('data', function (data) {
-        // console.log(data.toString());
-        dataToSend = data.toString();
+        console.log(data.toString());
+        dataToSend = data.toString('utf8');
     });
 
     // in close event we are sure that stream from child process is closed
     python.on('close', (code) => {
-        // console.log(`child process close all stdio with code ${code}`);
+        console.log(`child process close all stdio with code ${code}`);
         res.json(dataToSend);
     });
 })

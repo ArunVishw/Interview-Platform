@@ -1,6 +1,10 @@
 import React, { Component } from 'react'
 import {Link} from 'react-router-dom';
 
+import socketIOClient from "socket.io-client";
+const ENDPOINT = "http://localhost:5000";
+const socket = socketIOClient(ENDPOINT);
+
 const style1={
     marginTop: "12vh",
     borderLeft: "1px solid grey",
@@ -18,7 +22,56 @@ const style2={
 
 export default class Tool_Notepad extends Component {
 
-    componentDidMount(){
+    constructor(props) {
+        super(props);
+        const roomID = this.props.match.params.roomID;
+        this.state = {
+            text: "Type something here",
+            roomID: roomID
+        }
+        // this.textAreaRef = React.createRef();
+    }
+
+    changeText = () => {
+        let currentText = document.getElementById('notepad-text').value;
+        let data = {
+            text: currentText,
+            roomID: this.state.roomID
+        }
+        
+        this.setState({
+            text: data.text
+        });
+
+        socket.emit('updateNotepad',data);
+    }
+
+    giveTab = (e) => {
+        let textArea = document.getElementById('notepad-text');
+        if (e.keyCode === 9 || e.which === 9) {
+            e.preventDefault();
+            var s = textArea.selectionStart;
+            textArea.value = textArea.value.substring(0, textArea.selectionStart) + "\t" + textArea.value.substring(textArea.selectionEnd);
+            textArea.selectionEnd = s + 1;
+        }
+    }
+    
+
+    componentWillMount(){
+        
+        socket.emit('join', this.state.roomID, function (response) {
+            console.log(response);
+        });
+
+        socket.on('changeNotepad', (content) => {
+            // console.log(content);
+            this.setState({
+                text: content
+            });
+        });
+    }
+
+    componentDidMount = () => {
         var SpeechRecognition = window.webkitSpeechRecognition;
         var recognition = new SpeechRecognition();
         recognition.continuous = true;
@@ -46,6 +99,8 @@ export default class Tool_Notepad extends Component {
             document.getElementById('notepad-text').value = "";
         };
     }
+
+
     
     render() {
         return (
@@ -66,14 +121,13 @@ export default class Tool_Notepad extends Component {
                         </div>
                     </nav>
                     <div className="input-group" style={{height: "68vh"}}>
-                        <textarea className="form-control"  style={style2} aria-label="white textarea" id="notepad-text" defaultValue="Type Something Here"></textarea>
+                        <textarea className="form-control"  style={style2} aria-label="white textarea" id="notepad-text" value={this.state.text} onChange={this.changeText} onKeyDown={this.giveTab}></textarea>
                     </div>
                 </div>
             </div>
         )
     }
 }
-
 
 
 

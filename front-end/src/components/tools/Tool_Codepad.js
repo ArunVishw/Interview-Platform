@@ -32,6 +32,11 @@ import 'brace/theme/terminal';
 
 import {Link} from 'react-router-dom';
 
+import socketIOClient from "socket.io-client";
+const ENDPOINT = "http://localhost:5000";
+const socket = socketIOClient(ENDPOINT);
+
+
 const style1={
     borderLeft: "1px solid grey",
     borderTop: "1px solid grey",
@@ -73,19 +78,26 @@ function findAppropriateEditor(lang){
 
 
 export default class Tool_Codepad extends Component {
-    constructor(props, context) {
-        super(props, context);
+    constructor(props) {
+        super(props);
+        const roomID = this.props.match.params.roomID;
         this.state = {
             language: "Python3",
-            theme: "github"
-        };
-        
-        this.onChange = this.onChange.bind(this);
+            theme: "github",
+            roomID: roomID,
+            codeText: "print('Hello World')"
+        };    
+        this.editorRef = React.createRef();    
     }
 
-    onChange(newValue) {
-        // console.log(newValue);
-        code=newValue;
+    onChange = (newValue) => {
+        console.log(newValue);
+        code = newValue;
+        let data = {
+            text: code,
+            roomID: this.state.roomID
+        }
+        socket.emit('updateCodepadText',data);
     }
 
     changeLanguage = (event) => {
@@ -126,6 +138,19 @@ export default class Tool_Codepad extends Component {
                 console.log(JSON.stringify(error));
             }
         )
+    }
+
+    componentDidMount(){
+
+        socket.emit('join', this.state.roomID, function (response) {
+            console.log(response);
+        });
+
+        socket.on('changeCodepadText', (content) => {
+            code = content;
+            // this.refs.editor.editor.insert(content);
+            // this.editorRef.current.editor.insert(content);
+        });
     }
 
     render() {
@@ -190,17 +215,14 @@ export default class Tool_Codepad extends Component {
                             </ul>
                         </div>
                     </nav>
+
                     <AceEditor
                         mode={findAppropriateEditor(this.state.language)}
                         theme={this.state.theme}
                         onChange={this.onChange}
                         name="code-text"
+                        ref={this.editorRef}
                         editorProps={{ $blockScrolling: true }}
-                        setOptions={{
-                            'enableBasicAutocompletion': true,
-                            'enableLiveAutocompletion': true,
-                            'enableSnippets': true
-                        }}
                         style={{width: "100%", fontSize: "1rem", borderBottom: "1px solid black", borderLeft: "1px solid grey", borderRight: "1px solid grey"}}
                     />
 

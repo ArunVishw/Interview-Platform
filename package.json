@@ -1,0 +1,30 @@
+{
+  "name": "internship",
+  "version": "1.0.0",
+  "description": "Interview Platform Backend",
+  "main": "app.js",
+  "dependencies": {
+    "@supercharge/strings": "^1.12.0",
+    "body-parser": "^1.19.0",
+    "child_process": "^1.0.2",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "node-fetch": "^2.6.1",
+    "nodemon": "^2.0.4",
+    "socket.io": "^2.3.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ArunVishw/Interview-Platform.git"
+  },
+  "author": "Arun Vishwakarma",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ArunVishw/Interview-Platform/issues"
+  },
+  "homepage": "https://github.com/ArunVishw/Interview-Platform#readme"
+}

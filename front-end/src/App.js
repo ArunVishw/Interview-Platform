@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect }  from 'react';
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 
 //Fixed Components
@@ -29,7 +29,20 @@ import Tool_Codevideo from './components/tools/Tool_Codevideo';
 import Tool_Powerhouse from './components/tools/Tool_Powerhouse';
 import Error from './components/Error';
 
+import socketIOClient from "socket.io-client";
+const ENDPOINT = "http://localhost:5000";
+const socket = socketIOClient(ENDPOINT);
+
 function App() {
+
+  useEffect(() => {
+    socket.on('testingSC', () => {
+        console.log('Coonected to socket server backend');
+        socket.emit('testingCS');
+    });
+
+  }, []);
+
   return (
     <div className="App">
       <DataContext>

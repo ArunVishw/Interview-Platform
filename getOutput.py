@@ -22,4 +22,7 @@ while Output['status'] != 'SUCCESS' :
     response = requests.post(url2, data={'sid': sid, 'requestType': 'fetchResults'})
     Output = response.json()
 
-print(Output['output'])
+if 'output' in Output.keys():
+    print(Output['output'])
+else:
+    print(Output['cmpError'])
