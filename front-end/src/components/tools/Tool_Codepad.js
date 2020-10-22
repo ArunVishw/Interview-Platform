@@ -33,7 +33,7 @@ import 'brace/theme/terminal';
 import {Link} from 'react-router-dom';
 
 import socketIOClient from "socket.io-client";
-const ENDPOINT = "http://localhost:5000";
+const ENDPOINT = "http://192.168.29.253:5000";
 const socket = socketIOClient(ENDPOINT);
 
 
@@ -122,7 +122,7 @@ export default class Tool_Codepad extends Component {
             'save': false
         };
 
-        fetch("http://localhost:5000/tools/getCodeOutput",{
+        fetch("http://192.168.29.253:5000/tools/getCodeOutput",{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

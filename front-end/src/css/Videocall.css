@@ -6,6 +6,7 @@
     height: calc(100vh - var(--height-fixed-video));
     background-color: whitesmoke;
     overflow-y: auto;
+    position: relative;
 }
 
 .videocall-icons{
@@ -16,9 +17,10 @@
 
 .videocall-controls{
     background-color: whitesmoke;
+    z-index: 5;
 }
 
-#videoOn, #micOn, #collapseDeviceSelector, #endCall{
+#videoOn, #micOn, #collapseDeviceSelector, #endCall, #candidateDiv{
     display: none;
 }
 
@@ -27,7 +29,34 @@
 }
 
 video {
-    /* width: 90vw !important; */
-    /* height: calc(96vh - var(--height-fixed-video)) !important; */
     object-fit: cover;
 }
+
+#localVideo{
+    position: absolute;
+    z-index: 3;
+    top: 0;
+    left: 0;
+}
+
+#localDiv{
+    position: absolute;
+    z-index: 3;
+    top: 0;
+    left: 0;
+}
+
+#candidateVideo{
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+}
+
+#candidateDiv{
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+}
+

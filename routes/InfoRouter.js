@@ -5,7 +5,7 @@ const Str = require('@supercharge/strings')
 
 InfoRouter.post('/getCodepadLink', (req, res) => {
     const roomID = Str.random(10) ;
-    const link = "http://localhost:3000/tools/codepad/" + roomID;
+    const link = "http://" + process.env.HOST + ":3000/tools/codepad/" + roomID;
     res.json({
         link: link
     });
@@ -13,7 +13,7 @@ InfoRouter.post('/getCodepadLink', (req, res) => {
 
 InfoRouter.post('/getNotepadLink', (req, res) => {
     const roomID = Str.random(10) ;
-    const link = "http://localhost:3000/tools/notepad/" + roomID;
+    const link = "http://" + process.env.HOST + ":3000/tools/notepad/" + roomID;
     res.json({
         link: link
     });
@@ -21,7 +21,7 @@ InfoRouter.post('/getNotepadLink', (req, res) => {
 
 InfoRouter.post('/getVideoCallLink', (req, res) => {
     const roomID = Str.random(10) ;
-    const link = "http://localhost:3000/tools/videocall/" + roomID;
+    const link = "http://" + process.env.HOST + ":3000/tools/videocall/" + roomID;
     res.json({
         link: link
     });
@@ -29,7 +29,7 @@ InfoRouter.post('/getVideoCallLink', (req, res) => {
 
 InfoRouter.post('/getCodeVideoLink', (req, res) => {
     const roomID = Str.random(10) ;
-    const link = "http://localhost:3000/tools/code-video/" + roomID;
+    const link = "http://" + process.env.HOST + ":3000/tools/code-video/" + roomID;
     res.json({
         link: link
     });
@@ -37,7 +37,7 @@ InfoRouter.post('/getCodeVideoLink', (req, res) => {
 
 InfoRouter.post('/getNoteVideoLink', (req, res) => {
     const roomID = Str.random(10) ;
-    const link = "http://localhost:3000/tools/note-video/" + roomID;
+    const link = "http://" + process.env.HOST + ":3000/tools/note-video/" + roomID;
     res.json({
         link: link
     });
@@ -45,7 +45,7 @@ InfoRouter.post('/getNoteVideoLink', (req, res) => {
 
 InfoRouter.post('/getPowerhouseLink', (req, res) => {
     const roomID = Str.random(10) ;
-    const link = "http://localhost:3000/tools/powerhouse/" + roomID;
+    const link = "http://" + process.env.HOST + ":3000/tools/powerhouse/" + roomID;
     res.json({
         link: link
     });

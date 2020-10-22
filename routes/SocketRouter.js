@@ -39,5 +39,20 @@ module.exports = function(io){
             }
         });
 
+        socket.on("callUser", (data) => {
+            console.log("Calling User");
+            socket.broadcast.to(data.roomID).emit('hey', data.signal );
+        })
+    
+        socket.on("acceptCall", (data) => {
+            console.log("Accepting call");
+            socket.broadcast.to(data.roomID).emit('callAccepted', data.signal);
+        })
+    
+        socket.on("disconnectCall", (room) => {
+            console.log("Disconnecting call");
+            io.in(room).emit('disconnect');
+        })
+
     });
 };

@@ -1,5 +1,7 @@
 import React, { useEffect }  from 'react';
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
+import Peer from "simple-peer";
+
 
 //Fixed Components
 import Footer from './components/Footer';
@@ -30,7 +32,7 @@ import Tool_Powerhouse from './components/tools/Tool_Powerhouse';
 import Error from './components/Error';
 
 import socketIOClient from "socket.io-client";
-const ENDPOINT = "http://localhost:5000";
+const ENDPOINT = "http://192.168.29.253:5000";
 const socket = socketIOClient(ENDPOINT);
 
 function App() {

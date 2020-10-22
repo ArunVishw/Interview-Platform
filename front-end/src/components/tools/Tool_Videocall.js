@@ -1,11 +1,17 @@
 import '../../css/Videocall.css'
 import React, { Component } from 'react'
+import Peer from "simple-peer";
 
 import socketIOClient from "socket.io-client";
-const ENDPOINT = "http://localhost:5000";
+const ENDPOINT = "http://192.168.29.253:5000";
 const socket = socketIOClient(ENDPOINT);
 
-let localVideo, audioSelect, videoSelect, startTime=null;
+let localVideo, audioSelect, videoSelect, candidateVideo;
+var w = window.innerWidth;
+var h = window.innerHeight-168;
+let candidateSignal, localStream;
+var count=0;
+
 
 export default class Tool_Videocall extends Component {
 
@@ -13,7 +19,6 @@ export default class Tool_Videocall extends Component {
         super(props);
         const roomID = this.props.match.params.roomID;
         this.state = {
-            stream: '',
             roomID: roomID
         }
     }
@@ -21,6 +26,7 @@ export default class Tool_Videocall extends Component {
     componentDidMount = () => {
 
         localVideo = document.getElementById('localVideo');
+        candidateVideo = document.getElementById('candidateVideo');
 
         audioSelect = document.querySelector('select#audioSource');
         videoSelect = document.querySelector('select#videoSource');
@@ -28,34 +34,41 @@ export default class Tool_Videocall extends Component {
         navigator.mediaDevices.enumerateDevices()
         .then(this.gotDevices).then(this.getStream).catch(this.handleError);
 
-        audioSelect.onchange = this.getStream;
-        videoSelect.onchange = this.getStream;
+        audioSelect.onchange = this.getStream();
+        videoSelect.onchange = this.getStream();
 
         this.getStream().then(this.getDevices).then(this.gotDevices);
 
         socket.emit('join', this.state.roomID);
 
         socket.on('created', function(room, clientId) {
-            console.log('You (' + clientId + ') have created the room (' + room + ')');
+            console.log(`You (${clientId}) have joined the room (${room}`);
         });
         
         socket.on('full', function(room) {
-            console.log('Message from server : Room ' + room + ' is full.');
+            console.log(`Room (${room}) is full`);
         });
 
         socket.on('joined', function(room, clientId) {
-            console.log('Client (' + clientId + ') have joined the room (' + room + ')');
+            console.log(`Client (${clientId}) have joined the room (${room}`);
         });
 
-        // if (window.location.hostname !== 'localhost') {
-        //     this.requestTurn(
-        //       'https://computeengineondemand.appspot.com/turn?username=41784574&key=4080218913'
-        //     );
-        // }
+        socket.on("hey", signal => {
+            this.trace("SOMEONE CALLING");
+            candidateSignal = signal;
+            this.acceptCall();
+        });
 
-        // window.onbeforeunload = function() {
-        //     this.sendMessage('bye');
-        // };
+        socket.on("disconnect", () => {
+            this.trace("Call Ended");
+            document.getElementById('startCall').style.display = "block";
+            document.getElementById('endCall').style.display = "none";
+            document.getElementById('candidateDiv').style.display = "none";
+            document.getElementById('localVideo').height = h;
+            document.getElementById('localVideo').width = w;
+            this.setState({ state: this.state });
+        });
+
     }
 
     getDevices = () => {
@@ -64,82 +77,24 @@ export default class Tool_Videocall extends Component {
       
     gotDevices = (deviceInfos) => {
         window.deviceInfos = deviceInfos; // make available to console
-        console.log('Available input and output devices:', deviceInfos);
+        // console.log('Available input and output devices:', deviceInfos);
         for (const deviceInfo of deviceInfos) {
-            const option = document.createElement('option');
-            option.value = deviceInfo.deviceId;
+                const option = document.createElement('option');
+                option.value = deviceInfo.deviceId;
             if (deviceInfo.kind === 'audioinput') {
-            option.text = deviceInfo.label || `Microphone ${audioSelect.length + 1}`;
-            audioSelect.appendChild(option);
+                option.text = deviceInfo.label || `Microphone ${audioSelect.length + 1}`;
+                audioSelect.appendChild(option);
             } else if (deviceInfo.kind === 'videoinput') {
-            option.text = deviceInfo.label || `Camera ${videoSelect.length + 1}`;
-            videoSelect.appendChild(option);
+                option.text = deviceInfo.label || `Camera ${videoSelect.length + 1}`;
+                videoSelect.appendChild(option);
             }
         }
     }
     
     getStream = () => {
-        var w = window.innerWidth;
-        var h = window.innerHeight;
-        var height;
-        var width;
-        var c = document.getElementById("video-box").childElementCount;
-
-        if(w >= 1200){
-            if(c <= 1){
-                height=h-190;
-                width=w-100;
-            }
-            else if(c <= 2){
-                height=h-200;
-                width=w/2-10;
-            }
-            else if(c <= 4){
-                height=h-190;
-                width=w-100;
-            }
-            else if(c <= 6){
-                height=h-190;
-                width=w-100;
-            }
-            else if(c <= 9){
-                height=h-190;
-                width=w-100;
-            }
-            else if(c <= 12){
-                height=h-190;
-                width=w-100;
-            }
-        }
-
-        else if(w >= 992){
-            if(c === 1){
-                height=h-190;
-                width=w-50;
-            }
-        }
-
-        else if(w >= 768){
-            if(c === 1){
-                height=h-190;
-                width=w-25;
-            }
-        }
-
-        else if(w >= 576){
-            if(c === 1){
-                height=h-190;
-                width=w-10;
-            }
-        }
-
-        else{
-            height=400;
-            width=w-10;
-        }
-
-        document.getElementsByClassName('users').height = height;
-        document.getElementsByClassName('users').width = width;
+    
+        document.getElementById('candidateDiv').style.height = h;
+        document.getElementById('candidateDiv').style.width = w;
 
         if (window.stream) {
             window.stream.getTracks().forEach(track => {
@@ -149,14 +104,13 @@ export default class Tool_Videocall extends Component {
         
         const audioSource = audioSelect.value;
         const videoSource = videoSelect.value;
+
         const constraints = {
             audio: {
                 deviceId: audioSource ? {exact: audioSource} : undefined
             },
             video: {
-                deviceId: videoSource ? {exact: videoSource} : undefined,
-                height: height,
-                width: width,
+                deviceId: videoSource ? {exact: videoSource} : undefined
             }
         };
         this.trace('Requesting local stream.');
@@ -164,10 +118,14 @@ export default class Tool_Videocall extends Component {
     }
     
     gotStream = (stream) => {
+
         window.stream = stream; // make stream available to console
         audioSelect.selectedIndex = [...audioSelect.options].findIndex(option => option.text === stream.getAudioTracks()[0].label);
         videoSelect.selectedIndex = [...videoSelect.options].findIndex(option => option.text === stream.getVideoTracks()[0].label);
         localVideo.srcObject = stream;
+        document.getElementById('localVideo').height = h;
+        document.getElementById('localVideo').width = w;
+        localStream = stream;
         this.trace('Received local stream.');
     }
     
@@ -178,17 +136,98 @@ export default class Tool_Videocall extends Component {
     startCall = () => {
         document.getElementById('startCall').style.display = "none";
         document.getElementById('endCall').style.display = "block";
-
         this.trace('Starting call.');
-        startTime = window.performance.now();
-        
+
+        const peer1 = new Peer({
+            initiator: true,
+            trickle: false,
+            stream: localStream,
+            iceServers: [
+                { url: 'stun:stun1.l.google.com:19302' },
+                {
+                    url: 'turn:numb.viagenie.ca',
+                    credential: 'muazkh',
+                    username: 'webrtc@live.com'
+                }
+            ]
+        });
+
+        peer1.on('signal', data => {
+            this.trace('Working......................');
+            if(count<1){
+                socket.emit( "callUser", { roomID: this.state.roomID, signal: data });
+                count++;    
+            }
+        });
+
+        peer1.on('stream', stream => {
+            this.trace('Partner Stream recieved to original user');
+            if(w>992){
+                document.getElementById('localVideo').height = 150;
+                document.getElementById('localVideo').width = 250;
+            }
+            else{
+                document.getElementById('localVideo').height = 150;
+                document.getElementById('localVideo').width = 125;
+            }
+            document.getElementById('candidateDiv').style.display = "block";
+            candidateVideo.srcObject = stream;
+        });
+
+        socket.on("callAccepted", (signal) => {
+            this.trace("Outgoing call got Accepted");
+            peer1.signal(signal);
+        });
+
     }
 
-    // Handles hangup action: ends up call, closes connections and resets peers.
+    acceptCall = () => {
+        this.trace("Incoming Call Accepted");
+        document.getElementById('startCall').style.display = "none";
+        document.getElementById('endCall').style.display = "block";
+        const options = {
+            initiator: false,
+            trickle: false,
+            stream: localStream,
+            iceServers: [
+                { url: 'stun:stun1.l.google.com:19302' },
+                {
+                    url: 'turn:numb.viagenie.ca',
+                    credential: 'muazkh',
+                    username: 'webrtc@live.com'
+                }
+            ]
+        };
+        const peer2 = new Peer(options);
+        
+        peer2.on("signal", data => {
+            this.trace('Sending candidate signal now');
+            socket.emit("acceptCall", { roomID: this.state.roomID, signal: data});
+        });
+
+        peer2.on('stream', stream => {
+            this.trace('Partner Stream recieved to candidate user');
+            if(w>992){
+                document.getElementById('localVideo').height = 150;
+                document.getElementById('localVideo').width = 250;
+            }
+            else{
+                document.getElementById('localVideo').height = 150;
+                document.getElementById('localVideo').width = 125;
+            }
+            document.getElementById('candidateDiv').style.display = "block";
+            candidateVideo.srcObject = stream;
+        });
+
+        peer2.signal(candidateSignal);
+    }
+
     endCall = () => {
         document.getElementById('endCall').style.display = "none";
         document.getElementById('startCall').style.display = "block";
     
+        socket.emit("disconnectCall", this.state.roomID)
+
         this.trace('Ending call.');
     }
 
@@ -196,7 +235,6 @@ export default class Tool_Videocall extends Component {
     trace = (text) => {
         text = text.trim();
         const now = (window.performance.now() / 1000).toFixed(3);
-
         console.log(now, text);
     }
 
@@ -227,9 +265,12 @@ export default class Tool_Videocall extends Component {
     render() {
         return (
             <div className="content-wrapper-fixed">
-                <div className="d-flex flex-row justify-content-center align-items-center flex-wrap" id="video-box">
-                    <div className="users p-2">
+                <div className="" id="video-box">
+                    <div className="users" id="localDiv">
                         <video id="localVideo" playsInline muted autoPlay></video>
+                    </div>
+                    <div className="users" id="candidateDiv">
+                        <video width={w} height={h} id="candidateVideo" playsInline autoPlay></video>
                     </div>
                 </div>
                 <div className="videocall-controls  d-flex flex-row justify-content-center p-3 border-top border-info">

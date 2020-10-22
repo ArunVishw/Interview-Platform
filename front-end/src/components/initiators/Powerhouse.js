@@ -15,7 +15,7 @@ export default function Powerhouse() {
     function GenerateLink(){
 
         document.getElementById('loading').style.display = "block";
-        fetch("http://localhost:5000/info/getPowerhouseLink",{
+        fetch("http://192.168.29.253:5000/info/getPowerhouseLink",{
             method: 'POST',
         })
         .then(res => res.json())
