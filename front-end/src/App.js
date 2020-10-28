@@ -32,14 +32,14 @@ import Tool_Powerhouse from './components/tools/Tool_Powerhouse';
 import Error from './components/Error';
 
 import socketIOClient from "socket.io-client";
-const ENDPOINT = "http://192.168.29.253:5000";
-const socket = socketIOClient(ENDPOINT);
+
+const socket = socketIOClient(process.env.REACT_APP_BACKEND_SOCKET_ENDPOINT);
 
 function App() {
 
   useEffect(() => {
     socket.on('testingSC', () => {
-        console.log('Coonected to socket server backend');
+        console.log('Connected to socket server backend');
         socket.emit('testingCS');
     });
 

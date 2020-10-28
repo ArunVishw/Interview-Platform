@@ -16,7 +16,7 @@ export default function Notepad() {
     function GenerateLink(){
 
         document.getElementById('loading').style.display = "block";
-        fetch("http://192.168.29.253:5000/info/getNotepadLink",{
+        fetch("/info/getNotepadLink",{
             method: 'POST',
         })
         .then(res => res.json())

@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import {Link} from 'react-router-dom';
 
 import socketIOClient from "socket.io-client";
-const ENDPOINT = "http://192.168.29.253:5000";
-const socket = socketIOClient(ENDPOINT);
+const socket = socketIOClient(process.env.REACT_APP_BACKEND_SOCKET_ENDPOINT);
 
 const style1={
     marginTop: "12vh",

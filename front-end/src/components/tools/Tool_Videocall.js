@@ -3,8 +3,7 @@ import React, { Component } from 'react'
 import Peer from "simple-peer";
 
 import socketIOClient from "socket.io-client";
-const ENDPOINT = "http://192.168.29.253:5000";
-const socket = socketIOClient(ENDPOINT);
+const socket = socketIOClient(process.env.REACT_APP_BACKEND_SOCKET_ENDPOINT);
 
 let localVideo, audioSelect, videoSelect, candidateVideo;
 var w = window.innerWidth;

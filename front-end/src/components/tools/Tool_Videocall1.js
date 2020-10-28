@@ -21,9 +21,7 @@ function Tool_Videocall(props){
     var h = window.innerHeight-168;
 
     useEffect(() => {
-
-        const ENDPOINT = "http://192.168.29.253:5000";
-        socket.current = socketIOClient(ENDPOINT);
+        socket.current = socketIOClient(process.env.REACT_APP_BACKEND_SOCKET_ENDPOINT);
 
         audioSelect = document.querySelector('select#audioSource');
         videoSelect = document.querySelector('select#videoSource');
