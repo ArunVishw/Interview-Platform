@@ -44,6 +44,8 @@ app.use('/info', InfoRouter);
 const ToolsRouter = require(path.join(__dirname, './routes/ToolsRouter'));
 app.use('/tools', ToolsRouter);
 
-server.listen(process.env.PORT, () => {
-    console.log('Express server started at port',process.env.PORT)
+
+const port = process.env.PORT || 8080
+server.listen(port, () => {
+    console.log('Express server started at port', port)
 });
