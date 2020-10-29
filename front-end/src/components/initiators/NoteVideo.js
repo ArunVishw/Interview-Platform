@@ -15,7 +15,7 @@ export default function NoteVideo() {
     function GenerateLink(){
 
         document.getElementById('loading').style.display = "block";
-        fetch("/info/getNoteVideoLink",{
+        fetch("/api/info/getNoteVideoLink",{
             method: 'POST',
         })
         .then(res => res.json())

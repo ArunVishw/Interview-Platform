@@ -15,7 +15,7 @@ export default function Videocall() {
     function GenerateLink(){
 
         document.getElementById('loading').style.display = "block";
-        fetch("/info/getVideoCallLink",{
+        fetch("/api/info/getVideoCallLink",{
             method: 'POST',
         })
         .then(res => res.json())

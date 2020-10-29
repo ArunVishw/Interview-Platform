@@ -20,6 +20,6 @@ ToolsRouter.post('/getCodeOutput', (req,res) => {
         console.log(`child process close all stdio with code ${code}`);
         res.json(dataToSend);
     });
-})
+});
 
 module.exports = ToolsRouter;

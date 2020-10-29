@@ -66,6 +66,8 @@ export default class Tool_Videocall extends Component {
             document.getElementById('localVideo').height = h;
             document.getElementById('localVideo').width = w;
             this.setState({ state: this.state });
+            localStream.getTracks().forEach(track => track.enabled = !track.enabled);
+            this.getStream();
         });
 
     }
@@ -90,7 +92,7 @@ export default class Tool_Videocall extends Component {
         }
     }
     
-    getStream = () => {
+    getStream = ( a = true, v = true ) => {
     
         document.getElementById('candidateDiv').style.height = h;
         document.getElementById('candidateDiv').style.width = w;
@@ -104,13 +106,11 @@ export default class Tool_Videocall extends Component {
         const audioSource = audioSelect.value;
         const videoSource = videoSelect.value;
 
+        const audio = a ? { deviceId: audioSource ? {exact: audioSource} : undefined } : false;
+        const video = v ? { deviceId: videoSource ? {exact: videoSource} : undefined } : false;
         const constraints = {
-            audio: {
-                deviceId: audioSource ? {exact: audioSource} : undefined
-            },
-            video: {
-                deviceId: videoSource ? {exact: videoSource} : undefined
-            }
+            audio: audio,
+            video: video
         };
         this.trace('Requesting local stream.');
         return navigator.mediaDevices.getUserMedia(constraints).then(this.gotStream).catch(this.handleError);
@@ -122,6 +122,7 @@ export default class Tool_Videocall extends Component {
         audioSelect.selectedIndex = [...audioSelect.options].findIndex(option => option.text === stream.getAudioTracks()[0].label);
         videoSelect.selectedIndex = [...videoSelect.options].findIndex(option => option.text === stream.getVideoTracks()[0].label);
         localVideo.srcObject = stream;
+        localVideo.muted = true;
         document.getElementById('localVideo').height = h;
         document.getElementById('localVideo').width = w;
         localStream = stream;
@@ -224,9 +225,7 @@ export default class Tool_Videocall extends Component {
     endCall = () => {
         document.getElementById('endCall').style.display = "none";
         document.getElementById('startCall').style.display = "block";
-    
         socket.emit("disconnectCall", this.state.roomID)
-
         this.trace('Ending call.');
     }
 
@@ -240,25 +239,48 @@ export default class Tool_Videocall extends Component {
     videoOff = () => {
         document.getElementById('videoOff').style.display = "none";
         document.getElementById('videoOn').style.display = "block";
+        // this.getStream( undefined, false );
+        // localStream.getVideoTracks()[0].enabled = !(localStream.getVideoTracks()[0].enabled);
+        localStream.getVideoTracks().forEach( track => track.enabled = !track.enabled);
+        console.log("Vid Off");
     }
 
     videoOn = () => {
         document.getElementById('videoOn').style.display = "none";
         document.getElementById('videoOff').style.display = "block";
+        // this.getStream( undefined, true );
+        // localStream.getVideoTracks()[0].enabled = !(localStream.getVideoTracks()[0].enabled);
+        localStream.getVideoTracks().forEach( track => track.enabled = !track.enabled);
+        console.log("Vid On");
     }
 
     micOff = () => {
         document.getElementById('micOff').style.display = "none";
         document.getElementById('micOn').style.display = "block";
+        // this.getStream( false, undefined );
+        // localStream.getAudioTracks()[0].enabled = !(localStream.getAudioTracks()[0].enabled);
+        localStream.getAudioTracks().forEach( track => track.enabled = !track.enabled);
+        console.log("Mic Off");
     }
 
     micOn = () => {
         document.getElementById('micOn').style.display = "none";
         document.getElementById('micOff').style.display = "block";
+        // this.getStream( true, undefined );
+        // localStream.getAudioTracks()[0].enabled = !(localStream.getAudioTracks()[0].enabled);
+        localStream.getAudioTracks().forEach( track => track.enabled = !track.enabled);
+        console.log("Mic On");
     }
 
     share = () => {
-        
+        var dummy = document.createElement('input'),
+        text = window.location.href;
+        document.body.appendChild(dummy);
+        dummy.value = text;
+        dummy.select();
+        document.execCommand('copy');
+        document.body.removeChild(dummy);
+        alert("Text copied to clipboard");
     }
         
     render() {

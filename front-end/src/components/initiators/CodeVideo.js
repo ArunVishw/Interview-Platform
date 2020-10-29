@@ -15,7 +15,7 @@ export default function CodeVideo() {
     function GenerateLink(){
 
         document.getElementById('loading').style.display = "block";
-        fetch("/info/getCodeVideoLink",{
+        fetch("/api/info/getCodeVideoLink",{
             method: 'POST',
         })
         .then(res => res.json())

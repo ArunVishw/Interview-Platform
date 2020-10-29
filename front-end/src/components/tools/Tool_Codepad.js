@@ -121,7 +121,7 @@ export default class Tool_Codepad extends Component {
             'save': false
         };
 
-        fetch("/tools/getCodeOutput",{
+        fetch("/api/tools/getCodeOutput",{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

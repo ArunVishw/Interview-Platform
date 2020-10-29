@@ -28,21 +28,21 @@ app.use(express.static("public"));
 
 app.get('*', function(req, res) {
     res.sendFile('index.html', {root: path.join(__dirname, 'front-end', 'build')});
- [] });
+});
 
 app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     res.header("Access-Control-Allow-Credentials", "true");
-    res.sendFile(path.join(__dirname, "front-end", "build", "index.html"));
+    // res.sendFile('index.html', {root: path.join(__dirname, 'front-end', 'build')});
     next();
 });
 
 const InfoRouter = require(path.join(__dirname, './routes/InfoRouter'));
-app.use('/info', InfoRouter);
+app.use('/api/info', InfoRouter);
 
 const ToolsRouter = require(path.join(__dirname, './routes/ToolsRouter'));
-app.use('/tools', ToolsRouter);
+app.use('/api/tools', ToolsRouter);
 
 
 const port = process.env.PORT || 8080

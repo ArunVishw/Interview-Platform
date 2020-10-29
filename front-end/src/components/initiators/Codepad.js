@@ -15,7 +15,7 @@ export default function Codepad() {
     function GenerateLink(){
 
         document.getElementById('loading').style.display = "block";
-        fetch("/info/getCodepadLink",{
+        fetch("/api/info/getCodepadLink",{
             method: 'POST',
         })
         .then(res => res.json())
