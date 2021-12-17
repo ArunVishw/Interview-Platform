@@ -1,6 +1,6 @@
 # Interview Platform
 
-### View live demo at - www.interview-platform.me
+### View live demo at - http://ec2-3-143-226-106.us-east-2.compute.amazonaws.com/
 
 ## About
 This is a MERN Stack based web application providing an optimized **Interview Platform** for recruitements of new Employees/students.
